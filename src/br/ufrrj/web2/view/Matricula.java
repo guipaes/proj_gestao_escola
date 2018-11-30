@@ -2,7 +2,6 @@ package br.ufrrj.web2.view;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,10 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import br.ufrrj.web2.control.AlunoFacade;
-import br.ufrrj.web2.model.dao.AlunoDAO;
-import br.ufrrj.web2.model.dao.DisciplinaDAO;
 import br.ufrrj.web2.model.entities.AlunoEntity;
-import br.ufrrj.web2.model.entities.DisciplinaEntity;
 
 /**
  * Servlet implementation class Matricula
@@ -69,45 +65,13 @@ public class Matricula extends HttpServlet {
 				
 	}
 
-	private void matricularAlunoDisciplinasEscolhidas(AlunoEntity alunoEntity, String[] nomes_disciplinas_selecionadas) {
-		
-		AlunoDAO alunoDAO = new AlunoDAO();
-		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
-		
-		List<DisciplinaEntity> disciplinas = alunoEntity.getCurso().getDisciplinas();
-		for (String nome_disciplina_selecionada : nomes_disciplinas_selecionadas) {
-			
-			//aproveitando que trouxe tudo com Eager. Se tivesse colocado Lazy, teria que fazer consultas no BD.
-			for (DisciplinaEntity disciplina: disciplinas) {
-				System.out.println(nome_disciplina_selecionada);
-					
-				if (disciplina.getNomeDisciplina().equals(nome_disciplina_selecionada)) {
-
-					disciplina.addAluno(alunoEntity);
-					alunoEntity.addDisciplina(disciplina);
-					
-					alunoDAO.begin();
-					disciplinaDAO.begin();					
-					alunoDAO.merge(alunoEntity);
-					disciplinaDAO.merge(disciplina);
-					alunoDAO.commit();
-					disciplinaDAO.commit();
-					
-					break;
-				
-				}//fim do if					
-				
-			}//fim do for(DisciplinaEntity...
-			
-		}//fim do for(String...
-		
-	}//fim do método
 	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		AlunoFacade alunoFacade = new AlunoFacade();
 		HttpSession sessao = request.getSession();
 		
 		AlunoEntity alunoEntity = (AlunoEntity)sessao.getAttribute("aluno");
@@ -123,7 +87,7 @@ public class Matricula extends HttpServlet {
 			
 		}else {
 						
-			matricularAlunoDisciplinasEscolhidas(alunoEntity, nomes_disciplinas_selecionadas);
+			alunoFacade.matricularAlunoDisciplinasEscolhidas(alunoEntity, nomes_disciplinas_selecionadas);
 			
 			msg = "O aluno foi matriculado com sucesso.";
 			dispatcher = request.getRequestDispatcher("./index.jsp");

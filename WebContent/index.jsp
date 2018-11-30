@@ -17,8 +17,9 @@
 </div>
 
 <a href="add_curso.jsp">Criar Curso</a><br/>
-<a href="gerenciar_cursos.jsp">Gerenciar Cursos</a><br/>
 <a href="listar_disciplinas.jsp">Listar Disciplinas por Cursos</a><br/>
+<a href="gerenciar_cursos.jsp">Gerenciar Cursos</a><br/>
+<br/>
 <a href="add_aluno.jsp">Cadastrar Aluno</a><br/>
 <a href="matricular.jsp">Matrícular Aluno</a><br/>
 <a href="#">Gerenciar Alunos</a><br/>

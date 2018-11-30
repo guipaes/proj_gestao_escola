@@ -24,10 +24,28 @@
 </head>
 <body>
 
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 	<h3>${cursoCadastro.nomeCurso}</h3>
 
-	<form action="./disciplina.do" method="POST">
+	<c:if test="${gerenciar_curso eq 'alterar'}">
 	
+		<form action="./curso.do" method="GET">
+		
+			<p>Selecione as Disciplinas que Deseja Excluir:</p>
+			<c:forEach var="disciplina" items="${cursoCadastro.disciplinas}">
+				<input type="checkbox" name="excluir_disciplinas" value="${disciplina.id}"> ${disciplina.nomeDisciplina} <br/>		
+			</c:forEach>
+			<input type="submit" value="Excluir Disciplinas Selecionadas" />
+		
+		</form>
+		
+	</c:if>
+
+
+	<form action="./disciplina.do" method="POST">
+		
+		<p>Incluir Disciplinas:</p>
 		<div id="disciplinas">
 			<input type="text" name="nome_disciplina" placeholder="nome da disciplina"/>		
 		</div>
@@ -39,6 +57,7 @@
 		
 	</form>	
 	
+	<h6><a href="<c:url value='/index.jsp'/>">Voltar à Página Principal</a></h6>
 
 </body>
 </html>

@@ -66,5 +66,30 @@ public class CursoFacade {
 		
 		return cursoEntity;
 	}
+	
+	public CursoEntity atualizarCurso(CursoEntity curso) {
+		
+		CursoDAO cursoDAO = new CursoDAO();
+		cursoDAO.begin();
+		cursoDAO.merge(curso);
+		cursoDAO.commit();
+		return curso;
+	}
+	
+	public boolean excluirCurso(CursoEntity curso) {
+		
+		CursoDAO cursoDAO = new CursoDAO();
+		try {
+			cursoDAO.begin();
+			curso = cursoDAO.find(curso.getId());
+			cursoDAO.remove(curso);
+			cursoDAO.commit();
+			return true;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
 		
 }
